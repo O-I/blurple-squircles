@@ -1,6 +1,9 @@
-(ns blurple-squircles.core)
+(ns blurple-squircles.core
+  (:require [ring.adapter.jetty :as jetty]))
 
-(defn foo
-  "I don't do a whole lot."
-  [x]
-  (println x "Hello, World!"))
+(defn -main [port]
+  (jetty/run-jetty (fn [req]
+                     {:status 200
+                      :body "Blurple Squircles"
+                      :headers {}})
+                   {:port (Integer. port)}))
