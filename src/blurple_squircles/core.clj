@@ -1,20 +1,22 @@
 (ns blurple-squircles.core
   (:require [ring.adapter.jetty :as jetty]
-            [ring.middleware.reload :refer [wrap-reload]]))
+            [ring.middleware.reload :refer [wrap-reload]]
+            [compojure.core :refer [defroutes GET]]
+            [compojure.route :refer [not-found]]))
 
 (defn status [{:keys [uri] :as req}]
-  (if (= uri "/")
-    {:status 200
-     :body "Blurple Squircles"
-     :headers {}}
-    {:status 404
-     :body "Shape and/or color not found"
-     :headers {}}))
+  {:status 200
+   :body "Blurple Squircles"
+   :headers {}})
+
+(defroutes app
+  (GET "/" [] status)
+  (not-found "Shape and/or color not found"))
 
 (defn -main [port]
   (jetty/run-jetty status
                    {:port (Integer. port)}))
 
 (defn -dev-main [port]
-  (jetty/run-jetty (wrap-reload #'status)
+  (jetty/run-jetty (wrap-reload #'app)
                    {:port (Integer. port)}))
