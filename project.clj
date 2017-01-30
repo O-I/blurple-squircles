@@ -5,4 +5,6 @@
             :url "http://www.eclipse.org/legal/epl-v10.html"}
   :dependencies [[org.clojure/clojure "1.8.0"]
                  [ring "1.5.1"]]
-  :main blurple-squircles.core)
+  :main blurple-squircles.core
+  :profiles {:dev
+             {:main blurple-squircles.core/-dev-main}})

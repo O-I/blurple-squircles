@@ -1,5 +1,6 @@
 (ns blurple-squircles.core
-  (:require [ring.adapter.jetty :as jetty]))
+  (:require [ring.adapter.jetty :as jetty]
+            [ring.middleware.reload :refer [wrap-reload]]))
 
 (defn status [{:keys [uri] :as req}]
   (if (= uri "/")
@@ -12,4 +13,8 @@
 
 (defn -main [port]
   (jetty/run-jetty status
+                   {:port (Integer. port)}))
+
+(defn -dev-main [port]
+  (jetty/run-jetty (wrap-reload #'status)
                    {:port (Integer. port)}))
