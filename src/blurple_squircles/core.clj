@@ -2,19 +2,16 @@
   (:require [ring.adapter.jetty :as jetty]
             [ring.middleware.reload :refer [wrap-reload]]
             [compojure.core :refer [defroutes GET]]
-            [compojure.route :refer [not-found]]))
-
-(defn status [{:keys [uri] :as req}]
-  {:status 200
-   :body "Blurple Squircles"
-   :headers {}})
+            [compojure.route :refer [not-found resources]]
+            [blurple-squircles.views :refer [origin]]))
 
 (defroutes app
-  (GET "/" [] status)
+  (GET "/" [] (origin))
+  (resources "/")
   (not-found "Shape and/or color not found"))
 
 (defn -main [port]
-  (jetty/run-jetty status
+  (jetty/run-jetty app
                    {:port (Integer. port)}))
 
 (defn -dev-main [port]
